@@ -39,7 +39,7 @@ jobs:
         run: |
           ./configure --ninja
           # ninja -C out/Release    
-          touch out/Release/node
+          echo 'asd' > out/Release/node
         working-directory: node-${{ inputs.version }}
       
       - name: Create Release
@@ -50,5 +50,4 @@ jobs:
           prerelease: false
           tag_name: v${{ inputs.version }}
           files: | 
-            out/Release/node
-        working-directory: node-${{ inputs.version }}
+            node-${{ inputs.version }}/out/Release/node
