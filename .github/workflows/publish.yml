@@ -33,6 +33,8 @@ jobs:
       - name: apply diff
         run: |
           git apply ../fork.patch
+          git config --global user.email "you@example.com"
+          git config --global user.name "you"
           git add . 
           git commit -m "patched"
 
