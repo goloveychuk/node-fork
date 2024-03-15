@@ -27,10 +27,24 @@ jobs:
         run: wget https://github.com/nodejs/node/archive/refs/tags/v$NODE_VERSION.zip && unzip v$NODE_VERSION.zip
         env:
           NODE_VERSION: ${{ inputs.version }}
+      
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install ninja-build python-is-python3 -y
 
       - name: Build nodejs
         run: |
-          sudo apt-get update && sudo apt-get install ninja-build python-is-python3 -y
           ./configure --ninja
-          ninja -C out/Release    
+          # ninja -C out/Release    
+          touch out/Release/node
+        working-directory: node-${{ inputs.version }}
+      
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: false
+          prerelease: false
+          tag_name: v${{ inputs.version }}
+          files: | 
+            out/Release/node
         working-directory: node-${{ inputs.version }}
