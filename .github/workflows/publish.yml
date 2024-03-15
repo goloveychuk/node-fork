@@ -7,7 +7,7 @@ on:
       version:
         description: 'Nodejs version to build'
         required: true
-        default: 'v20.11.1'
+        default: '20.11.1'
  
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -24,7 +24,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: download nodejs sources
-        run: wget https://github.com/nodejs/node/archive/refs/tags/$NODE_VERSION.zip && unzip $NODE_VERSION.zip
+        run: wget https://github.com/nodejs/node/archive/refs/tags/v$NODE_VERSION.zip && unzip v$NODE_VERSION.zip
         env:
           NODE_VERSION: ${{ inputs.version }}
 
@@ -33,4 +33,4 @@ jobs:
           apt-get update && apt-get install ninja-build python-is-python3 -y
           ./configure --ninja
           ninja -C out/Release    
-        working-directory: ${{ inputs.version }}
+        working-directory: node-${{ inputs.version }}
