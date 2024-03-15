@@ -1,17 +1,14 @@
-# This is a basic workflow to help you get started with Actions
 
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Nodejs version to build'
+        required: true
+        default: 'latest'
+ 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -23,14 +20,17 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: download nodejs sources
+        run: wget https://github.com/nodejs/node/archive/refs/tags/$NODE_VERSION.zip && unzip $NODE_VERSION.zip
+        env:
+          NODE_VERSION: ${{ inputs.version }}
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Build nodejs
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          apt-get update && apt-get install ninja-build python-is-python3 -y
+          ./configure --ninja
+          ninja -C out/Release    
+        working-directory: $NODE_VERSION
