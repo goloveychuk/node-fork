@@ -33,6 +33,4 @@ jobs:
           apt-get update && apt-get install ninja-build python-is-python3 -y
           ./configure --ninja
           ninja -C out/Release    
-        working-directory: $NODE_VERSION
-        env:
-          NODE_VERSION: ${{ inputs.version }}
+        working-directory: ${{ inputs.version }}
