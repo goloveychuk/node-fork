@@ -30,7 +30,7 @@ jobs:
 
       - name: Build nodejs
         run: |
-          apt-get update && apt-get install ninja-build python-is-python3 -y
+          sudo apt-get update && sudo apt-get install ninja-build python-is-python3 -y
           ./configure --ninja
           ninja -C out/Release    
         working-directory: node-${{ inputs.version }}
