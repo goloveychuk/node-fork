@@ -24,12 +24,18 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: download nodejs sources
-        run: wget https://github.com/nodejs/node/archive/refs/tags/v$NODE_VERSION.zip && unzip v$NODE_VERSION.zip
+        run: |
+          wget https://github.com/nodejs/node/archive/refs/tags/v$NODE_VERSION.zip
+          unzip v$NODE_VERSION.zip
         env:
           NODE_VERSION: ${{ inputs.version }}
 
       - name: apply diff
-        run: git apply ../fork.patch
+        run: |
+          git apply ../fork.patch
+          git add . 
+          git commit -m "patched"
+
         working-directory: node-${{ inputs.version }}
       
       - name: Install dependencies
@@ -37,8 +43,9 @@ jobs:
 
       - name: Build nodejs
         run: |
-          ./configure --ninja
-          ninja -C out/Release    
+          make binary
+          # ./configure --ninja
+          # ninja -C out/Release    
           # echo 'asd' > out/Release/node
         working-directory: node-${{ inputs.version }}
       
@@ -50,4 +57,4 @@ jobs:
           prerelease: false
           tag_name: v${{ inputs.version }}
           files: | 
-            node-${{ inputs.version }}/out/Release/node
+            node-${{ inputs.version }}/node-*.tar.gz
