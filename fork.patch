@@ -1,0 +1,13 @@
+diff --git a/tools/v8_gypfiles/features.gypi b/tools/v8_gypfiles/features.gypi
+index c768d7a0f13..bc344b13e6b 100644
+--- a/tools/v8_gypfiles/features.gypi
++++ b/tools/v8_gypfiles/features.gypi
+@@ -83,7 +83,7 @@
+         # child process doesn't generally need to access.
+         #
+         # See v8:7381 for more details.
+-        'v8_enable_private_mapping_fork_optimization': 1,
++        'v8_enable_private_mapping_fork_optimization': 0,
+       }, {
+         'v8_enable_private_mapping_fork_optimization': 0,
+       }],

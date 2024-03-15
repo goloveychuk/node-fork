@@ -27,6 +27,10 @@ jobs:
         run: wget https://github.com/nodejs/node/archive/refs/tags/v$NODE_VERSION.zip && unzip v$NODE_VERSION.zip
         env:
           NODE_VERSION: ${{ inputs.version }}
+
+      - name: apply diff
+        run: git apply ../fork.patch
+        working-directory: node-${{ inputs.version }}
       
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install ninja-build python-is-python3 -y
